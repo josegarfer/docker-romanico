@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monasterio de San Zoilo</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+header { background: #444; color: #fff; padding: 20px; text-align: center; }
+section { max-width: 900px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 8px; }
+img { max-width: 100%; border-radius: 8px; margin: 10px 0; }
+.gallery { display: flex; gap: 10px; flex-wrap: wrap; }
+.gallery img { width: 30%; border-radius: 6px; }
+.qr { width: 200px; }
+button { background: #444; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
+button:hover { background: #666; }
+</style>
+</head>
+<body>
+<header>
+<h1>Monasterio de San Zoilo</h1>
+</header>
+<section>
+<h2>Imagen Principal</h2>
+<img src="https://raw.githubusercontent.com/pepexcris/Romanico-Palentino/master/images/monasteriosanzoilo01.jpg" alt="Monasterio de San Zoilo">
+
+<h2>Galería</h2>
+<div class="gallery">
+<img src="https://raw.githubusercontent.com/pepexcris/Romanico-Palentino/master/images/monasteriosanzoilo02.jpg">
+<img src="https://raw.githubusercontent.com/pepexcris/Romanico-Palentino/master/images/monasteriosanzoilo03.jpg">
+<img src="https://raw.githubusercontent.com/pepexcris/Romanico-Palentino/master/images/san-zoilo09.jpg">
+</div>
+
+<h2>Audioguía</h2>
+<audio controls src="https://raw.githubusercontent.com/pepexcris/Romanico-Palentino/master/audios/audioguia_monasterio_de_san_zoilo.mp3"></audio>
+<br>
+<img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://raw.githubusercontent.com/pepexcris/Romanico-Palentino/master/audios/audioguia_monasterio_de_san_zoilo.mp3">
+
+<br><br>
+<button onclick="location.href='../index.html'">Volver</button>
+</section>
+<footer style="background:#444;color:white;text-align:center;padding:15px;margin-top:40px;">
+Página creada por "El Serrano" de Villanueva del Conde (Salamanca)
+</footer>
+  
+</body>
+</html>
