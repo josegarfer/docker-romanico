@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iglesia de Santa María del Camino</title>
+
+  <!-- Estilos generales del románico -->
+  <link rel="stylesheet" href="/romanico/css/style.css">
+
+  <!-- Estilos específicos de esta página -->
+  <style>
+    .imagen-principal img {
+      width: 100%;
+      max-width: 700px;
+      display: block;
+      margin: 0 auto 20px auto;
+      border-radius: 8px;
+    }
+
+    .galeria {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .galeria img {
+      width: 30%;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: transform 0.3s;
+    }
+
+    .galeria img:hover {
+      transform: scale(1.05);
+    }
+  </style>
+
+  <script>
+    function cambiarImagen(img) {
+      const grande = document.getElementById("imagen-grande");
+      grande.src = img.src;
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <h1>Iglesia de Santa María del Camino</h1>
+  </header>
+
+  <section>
+    <h2>Imagen Principal</h2>
+    <div class="imagen-principal">
+      <img id="imagen-grande" src="/romanico/images/iglesiasantamaria01.jpg" alt="Imagen principal">
+    </div>
+
+    <h2>Galería</h2>
+    <div class="galeria">
+      <img src="/romanico/images/iglesiasantamaria01.jpg" alt="Santa María 1" onclick="cambiarImagen(this)">
+      <img src="/romanico/images/iglesiasantamaria02.jpg" alt="Santa María 2" onclick="cambiarImagen(this)">
+      <img src="/romanico/images/iglesiasantamaria03.jpg" alt="Santa María 3" onclick="cambiarImagen(this)">
+    </div>
+
+    <h2>Audioguía</h2>
+    <audio controls src="/romanico/audios/audioguia_de_la_iglesia_de_santa_maria_del_camino.mp3"></audio>
+    <br>
+    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=/romanico/audios/audioguia_de_la_iglesia_de_santa_maria_del_camino.mp3" />
+  </section>
+
+  <footer style="background:#444;color:white;text-align:center;padding:15px;margin-top:40px;">
+    Página creada por "El Serrano" de Villanueva del Conde (Salamanca)
+  </footer>
+
+</body>
+</html>
