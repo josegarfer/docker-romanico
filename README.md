@@ -12,16 +12,17 @@ Este proyecto implementa una aplicación web basada en **Laravel**, con autentic
 ---
 
 <p align="center">
-  <img src="images/captura_login_correcto.png" alt="Login correcto" width="70%" />
+  <img src="images/captura_registro.png" alt="Registro de usuario" width="70%" />
 </p>
-<p align="center"><em>Pantalla de inicio de sesión</em></p>
+<p align="center"><em>Formulario de registro</em></p>
 
 ---
 
 <p align="center">
-  <img src="images/captura_registro.png" alt="Registro de usuario" width="70%" />
+  <img src="images/captura_login_correcto.png" alt="Login correcto" width="70%" />
 </p>
-<p align="center"><em>Formulario de registro</em></p>
+<p align="center"><em>Pantalla de la web con la sesión iniciada</em></p>
+
 
 
 ---
@@ -36,7 +37,7 @@ El archivo `docker-compose.yml` define tres contenedores principales:
 
 La aplicación está disponible en:
 
-http://localhost:8080
+http://localhost:8083
 
 ---
 
@@ -54,7 +55,7 @@ docker compose up -d --build
 ```
 ### 3. Abrir la aplicación
 ```bash
-http://localhost:8080
+http://localhost:8083
 ```
 ## 📁 Estructura del proyecto
 ```
