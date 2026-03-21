@@ -12,9 +12,6 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - romanico-net
-    # IMPORTANTE: sin "ports: 3306:3306"
-    # La base de datos queda totalmente aislada
-
 
   backend:
     build:
@@ -25,11 +22,11 @@ services:
       - db
     volumes:
       - ./backend:/var/www/html
+    environment:
+      - CODESPACE_NAME=${CODESPACE_NAME:-}
+      - GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN=${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}
     networks:
       - romanico-net
-    # NO exponer 9000 hacia fuera
-    # NGINX se encargará de servir la app
-
 
   backend-nginx:
     image: nginx:alpine
@@ -37,13 +34,12 @@ services:
     depends_on:
       - backend
     ports:
-      - "8083:80"   # Solo NGINX se expone hacia la LAN
+      - "8083:80"
     volumes:
       - ./backend:/var/www/html
       - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - romanico-net   # Puede acceder al backend
-
+      - romanico-net
 
 volumes:
   db_data:
