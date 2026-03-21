@@ -12,7 +12,10 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Playfair Display', ...defaultTheme.fontFamily.sans],
+                cinzel: ['Cinzel', 'serif'],
+                playfair: ['Playfair Display', 'serif'],
+                figtree: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },
