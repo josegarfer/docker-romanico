@@ -23,25 +23,34 @@ Este proyecto implementa una aplicación web basada en **Laravel**, con autentic
 </p>
 <p align="center"><em>Pantalla de la web con la sesión iniciada</em></p>
 
-
-
 ---
 
 ## 🧱 Contenedores incluidos
 
-El archivo `docker-compose.yml` define tres contenedores principales:
+El archivo `docker-compose.yml` define tres contenedores:
 
-- **romanico-db** → Servidor MySQL 8.0  
-- **romanico-backend** → PHP-FPM ejecutando Laravel  
+- **romanico-db** → Servidor MySQL 8.0
+- **romanico-backend** → PHP-FPM ejecutando Laravel
 - **romanico-backend-nginx** → Servidor Nginx que sirve Laravel
-
-La aplicación está disponible en:
-
-http://localhost:8083
 
 ---
 
-## 🚀 Cómo desplegar la aplicación (desarrollo básico)
+## 🚀 Opción 1 — Despliegue en GitHub Codespaces (recomendado, sin instalar nada)
+
+> ☝️ Solo necesitas un navegador y una cuenta de GitHub.
+
+1. Haz clic en el botón verde **`<> Code`** de este repositorio
+2. Pestaña **Codespaces** → **"Create codespace on main"**
+3. Espera a que termine el build (puede tardar 2-5 minutos)
+4. El navegador se abrirá automáticamente en la aplicación ✅
+
+Todo lo demás (dependencias, migraciones, permisos) se configura solo.
+
+---
+
+## 🖥️ Opción 2 — Despliegue en local (Linux/Debian)
+
+> Requisitos: tener instalados `git` y `docker`.
 
 ### 1. Clonar el repositorio
 
@@ -49,22 +58,37 @@ http://localhost:8083
 git clone https://github.com/josegarfer/docker-romanico.git
 cd docker-romanico
 ```
-### 2. Levantar el entorno
+
+### 2. Levantar los contenedores
+
 ```bash
 docker compose up -d --build
 ```
+
 ### 3. Abrir la aplicación
-```bash
+
+```
 http://localhost:8083
 ```
+
+> El primer arranque puede tardar un par de minutos mientras se instalan las dependencias y se migra la base de datos automáticamente.
+
+---
+
 ## 📁 Estructura del proyecto
+
 ```
+.devcontainer/              → Configuración de GitHub Codespaces
 backend/                    → Proyecto Laravel
+backend/entrypoint.sh       → Script de arranque automático
 backend/public/romanico/    → Imágenes, audios y subpáginas del Románico
 backend/resources/views/    → Vistas Blade
 docker-compose.yml          → Orquestación de contenedores
 ```
-### 🗄 Base de datos MySQL
+
+---
+
+## 🗄️ Base de datos MySQL
 
 | Parámetro     | Valor        |
 |---------------|--------------|
@@ -73,98 +97,22 @@ docker-compose.yml          → Orquestación de contenedores
 | Contraseña    | romanico123  |
 | Base de datos | romanico     |
 
-Laravel se conecta usando estas variables en el archivo .env.
+---
 
-### 🏁 Release
+## ✔️ Estado final
 
-La versión final se publica en Releases bajo el tag:
-```
-v1.0.0
-```
+La aplicación queda totalmente funcional con:
 
-Incluye todo el código necesario para desplegar la aplicación.
+- ✅ Despliegue automático en Codespaces con un solo clic
+- ✅ Despliegue local con un solo comando
+- ✅ Frontend compilado (Vite + Tailwind)
+- ✅ Entorno Laravel configurado
+- ✅ Base de datos migrada
+- ✅ Permisos corregidos
+- ✅ Cachés limpiadas
 
-## 📘 Guía completa de despliegue en Debian
+---
 
-Esta guía resume todos los pasos necesarios para desplegar el proyecto Románico en una máquina Debian.
+## 🏁 Release
 
-#### 1. Clonar el repositorio
-```bash
-git clone https://github.com/josegarfer/docker-romanico.git
-cd docker-romanico
-```
-#### 2. Ajustar puertos del docker-compose.yml
-
-Si los puertos están ocupados:
-```bash
-nano docker-compose.yml
-```
-
-Modificar:
-backend: 9003:9000 → 900x:9000
-backend-nginx: 8083:80 → 808x:80
-
-#### 3. Crear y configurar .env
-```bash
-cp backend/.env.example backend/.env
-nano backend/.env
-```
-Variables necesarias:
-```bash
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=romanico
-DB_USERNAME=romanico
-DB_PASSWORD=romanico123
-```
-#### 4. Instalar dependencias y compilar assets
-
-Como el repositorio no incluye vendor/ ni el build de frontend:
-```bash
-docker compose run --rm backend composer install
-docker compose run --rm backend npm install
-docker compose run --rm backend npm run build
-```
-#### 5. Levantar los contenedores
-```bash
-docker compose up -d
-```
-
-#### 7. Generar la APP_KEY de Laravel
-```bash
-docker compose exec backend php artisan key:generate
-```
-#### 8. Migrar la base de datos
-```bash
-docker compose run --rm backend php artisan migrate --force
-```
-#### 9. Ajustar permisos y limpiar cachés
-```bash
-docker compose exec backend bash -c "chown -R www-data:www-data storage bootstrap/cache"
-docker compose exec backend php artisan optimize:clear
-```
-#### 10. Acceso final a la aplicación
-
-En la máquina Debian:
-```bash
-http://<IP-DEBIAN>:8083
-```
-
-Ejemplos:
-
-http://localhost:8083
-
-http://192.168.1.190:8083
-
-## ✔ Estado final
-
-Tras completar estos pasos la aplicación queda totalmente desplegada, con:
-
- - Frontend compilado
- - Entorno Laravel configurado
- - Base de datos migrada
- - Cachés limpiadas
- - Permisos corregidos
-
-Lista para su uso y para ser demostrada en entornos de prácticas.
+La versión final corregida está publicada en Releases bajo el tag `v1.2.0`.
