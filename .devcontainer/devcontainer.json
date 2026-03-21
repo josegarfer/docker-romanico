@@ -1,0 +1,13 @@
+{
+  "name": "Romanico Laravel",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/var/www/html",
+  "forwardPorts": [8083],
+  "portsAttributes": {
+    "8083": {
+      "label": "Laravel App",
+      "onAutoForward": "openBrowser"
+    }
+  }
+}

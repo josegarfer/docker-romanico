@@ -33,4 +33,6 @@ RUN composer install
 # Instalar dependencias JS y compilar Vite
 RUN npm install && npm run build
 
-CMD ["php-fpm"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
