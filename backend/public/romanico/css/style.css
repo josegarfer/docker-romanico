@@ -1,76 +1,267 @@
+/* ============================================================
+   Románico Palentino — Fichas de Monumentos
+   Paleta: stone-900 / amber-700 / amber-50
+   Fuentes: Cinzel (títulos) · Playfair Display (cuerpo)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ---------- Variables ---------- */
+:root {
+  --stone-900: #1c1917;
+  --stone-800: #292524;
+  --stone-700: #44403c;
+  --stone-400: #a8a29e;
+  --stone-300: #d6d3d1;
+  --amber-700:  #b45309;
+  --amber-600:  #d97706;
+  --amber-400:  #fbbf24;
+  --amber-300:  #fcd34d;
+  --amber-100:  #fef3c7;
+  --amber-50:   #fffbeb;
+}
+
+/* ---------- Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Playfair Display', Georgia, serif;
   margin: 0;
   padding: 0;
-  background: #f7f7f7;
-}
-
-header {
-  background: #444;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-}
-
-section {
-  max-width: 900px;
-  margin: 20px auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-h2 {
-  color: #333;
+  background: var(--amber-50);
+  color: var(--stone-800);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 img {
   max-width: 100%;
   border-radius: 8px;
-  margin: 10px 0;
   display: block;
 }
 
-.qr {
-  width: 150px;
-  margin-top: 10px;
+/* ---------- Navbar ---------- */
+.romanico-nav {
+  background: var(--stone-900);
+  border-bottom: 2px solid var(--amber-700);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
-.btn {
-  display: inline-block;
-  background: #444;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
+.romanico-nav__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.romanico-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
-  margin: 10px 0;
+  color: var(--amber-400);
+  transition: color 0.2s;
+}
+.romanico-nav__brand:hover { color: var(--amber-300); }
+
+.romanico-nav__brand svg {
+  height: 2.2rem;
+  width: auto;
+  flex-shrink: 0;
 }
 
-.btn:hover {
-  background: #666;
+.romanico-nav__brand span {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber-100);
+  transition: color 0.2s;
+}
+.romanico-nav__brand:hover span { color: var(--amber-300); }
+
+.romanico-nav__back {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stone-300);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--stone-700);
+  border-radius: 0.375rem;
+  background: var(--stone-800);
+  transition: color 0.2s, border-color 0.2s;
+}
+.romanico-nav__back:hover {
+  color: var(--amber-300);
+  border-color: var(--amber-600);
 }
 
+/* ---------- Header de la ficha ---------- */
+.ficha-header {
+  background: var(--stone-900);
+  border-bottom: 3px solid var(--amber-700);
+  text-align: center;
+  padding: 2.5rem 1.5rem 2rem;
+}
+
+.ficha-header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 700;
+  color: var(--amber-100);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Ornamento decorativo bajo el título */
+.ficha-header::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 2px;
+  background: var(--amber-700);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+/* ---------- Contenido principal ---------- */
+.ficha-content {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ---------- Secciones / Cards ---------- */
+.ficha-section {
+  background: #fff;
+  border: 1px solid var(--stone-300);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.ficha-section h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--amber-700);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--amber-100);
+}
+
+/* ---------- Imagen principal ---------- */
 .imagen-principal img {
   width: 100%;
   max-width: 700px;
   display: block;
-  margin: 0 auto 20px auto;
-  border-radius: 8px;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.imagen-principal img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
+/* ---------- Galería ---------- */
 .galeria {
   display: flex;
-  gap: 15px;
+  gap: 0.75rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .galeria img {
-  width: 30%;
+  width: calc(33% - 0.5rem);
+  min-width: 100px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: transform 0.3s;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  object-fit: cover;
+  aspect-ratio: 4/3;
 }
 
 .galeria img:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
+  border-color: var(--amber-600);
+  box-shadow: 0 4px 12px rgba(180,83,9,0.35);
+}
+
+/* ---------- Audio ---------- */
+audio {
+  width: 100%;
+  max-width: 500px;
+  margin: 0.25rem 0 1rem;
+  accent-color: var(--amber-700);
+}
+
+/* ---------- QR ---------- */
+.qr {
+  width: 130px;
+  border-radius: 0.5rem;
+  border: 2px solid var(--stone-300);
+  padding: 4px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-top: 0.5rem;
+}
+
+/* ---------- Botón genérico ---------- */
+.btn {
+  display: inline-block;
+  background: var(--amber-700);
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.4rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.btn:hover { background: var(--amber-600); }
+
+/* ---------- Footer ---------- */
+.romanico-footer {
+  background: var(--stone-900);
+  border-top: 2px solid var(--stone-700);
+  color: var(--stone-400);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  text-align: center;
+  padding: 1.25rem;
+  margin-top: auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .romanico-nav__brand span { display: none; }
+  .ficha-section { padding: 1.25rem 1rem; }
+  .galeria img { width: calc(50% - 0.375rem); }
 }

@@ -19,6 +19,14 @@ Route::get('/dashboard', function () {
     return view('romanico.home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Fichas de monumentos (protegidas)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/romanico/santa_maria', fn() => view('romanico.santa_maria'))->name('romanico.santa_maria');
+    Route::get('/romanico/santiago',    fn() => view('romanico.santiago'))->name('romanico.santiago');
+    Route::get('/romanico/santa_clara', fn() => view('romanico.santa_clara'))->name('romanico.santa_clara');
+    Route::get('/romanico/san_zoilo',   fn() => view('romanico.san_zoilo'))->name('romanico.san_zoilo');
+});
+
 // Rutas de perfil (protegidas)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

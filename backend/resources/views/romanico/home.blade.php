@@ -50,7 +50,7 @@
                 <p class="font-playfair text-stone-600 italic leading-relaxed mb-5">
                     Uno de los templos románicos más emblemáticos del Camino de Santiago en Tierra de Campos.
                 </p>
-                <a href="/romanico/santa_maria/index.html" class="btn-romanico text-xs">
+                <a href="{{ route('romanico.santa_maria') }}" class="btn-romanico text-xs">
                     Ver ficha completa
                 </a>
 
@@ -91,7 +91,7 @@
                 <p class="font-playfair text-stone-600 italic leading-relaxed mb-5">
                     Famosa por su imponente fachada esculpida y su iconografía del Maestro de Carrión.
                 </p>
-                <a href="/romanico/santiago/index.html" class="btn-romanico text-xs">
+                <a href="{{ route('romanico.santiago') }}" class="btn-romanico text-xs">
                     Ver ficha completa
                 </a>
 
@@ -132,7 +132,7 @@
                 <p class="font-playfair text-stone-600 italic leading-relaxed mb-5">
                     Conjunto monástico de gran importancia histórica con elementos románicos y góticos.
                 </p>
-                <a href="/romanico/santa_clara/index.html" class="btn-romanico text-xs">
+                <a href="{{ route('romanico.santa_clara') }}" class="btn-romanico text-xs">
                     Ver ficha completa
                 </a>
 
@@ -173,7 +173,7 @@
                 <p class="font-playfair text-stone-600 italic leading-relaxed mb-5">
                     Uno de los monasterios más relevantes de la zona y antiguo centro de cultura y acogida.
                 </p>
-                <a href="/romanico/san_zoilo/index.html" class="btn-romanico text-xs">
+                <a href="{{ route('romanico.san_zoilo') }}" class="btn-romanico text-xs">
                     Ver ficha completa
                 </a>
 
