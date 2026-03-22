@@ -70,7 +70,7 @@
                 <div class="mt-5 flex items-center gap-4">
                     <span class="font-cinzel text-xs text-stone-400 uppercase tracking-widest">Código QR</span>
                     <img class="w-24 h-24 border-2 border-amber-200 rounded-lg shadow-sm"
-                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=/romanico/audios/audioguia_de_la_iglesia_de_santa_maria_del_camino.mp3"
+                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ url('/romanico/audios') }}/audioguia_de_la_iglesia_de_santa_maria_del_camino.mp3"
                          alt="QR Audioguía Santa María" />
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class="mt-5 flex items-center gap-4">
                     <span class="font-cinzel text-xs text-stone-400 uppercase tracking-widest">Código QR</span>
                     <img class="w-24 h-24 border-2 border-amber-200 rounded-lg shadow-sm"
-                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=/romanico/audios/audioguia_iglesia_de_santiago.mp3"
+                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ url('/romanico/audios') }}/audioguia_iglesia_de_santiago.mp3"
                          alt="QR Audioguía Santiago" />
                 </div>
             </div>
@@ -152,7 +152,7 @@
                 <div class="mt-5 flex items-center gap-4">
                     <span class="font-cinzel text-xs text-stone-400 uppercase tracking-widest">Código QR</span>
                     <img class="w-24 h-24 border-2 border-amber-200 rounded-lg shadow-sm"
-                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=/romanico/audios/audioguia_monasterio_de_santa_clara.mp3"
+                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ url('/romanico/audios') }}/audioguia_monasterio_de_santa_clara.mp3"
                          alt="QR Audioguía Santa Clara" />
                 </div>
             </div>
@@ -193,7 +193,7 @@
                 <div class="mt-5 flex items-center gap-4">
                     <span class="font-cinzel text-xs text-stone-400 uppercase tracking-widest">Código QR</span>
                     <img class="w-24 h-24 border-2 border-amber-200 rounded-lg shadow-sm"
-                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=/romanico/audios/audioguia_monasterio_de_san_zoilo.mp3"
+                         src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ url('/romanico/audios') }}/audioguia_monasterio_de_san_zoilo.mp3"
                          alt="QR Audioguía San Zoilo" />
                 </div>
             </div>
