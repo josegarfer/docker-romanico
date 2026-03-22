@@ -42,7 +42,7 @@ El archivo `docker-compose.yml` define tres contenedores:
 1. Haz clic en el botón verde **`<> Code`** de este repositorio
 2. Pestaña **Codespaces** → **"Create codespace on main"**
 3. Espera a que termine el build (puede tardar 2-5 minutos)
-4. El navegador se abrirá automáticamente en la aplicación ✅
+4. Ve a la pestaña **Puertos**, localiza el puerto **8083** y haz clic en el icono 🌐 para abrirlo en el navegador.
 
 Todo lo demás (dependencias, migraciones, permisos) se configura solo.
 
