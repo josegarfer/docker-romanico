@@ -1,4 +1,3 @@
-````markdown
 # Práctica 3 – Docker Multicontenedor: Aplicación Románico Palentino
 
 Este proyecto implementa una arquitectura de microservicios para una aplicación basada en **Laravel** sobre el **Románico Palentino**. El despliegue se realiza mediante **Docker Compose**, aplicando principios de segmentación de red, gestión de secretos y seguridad **Zero Trust**.
@@ -127,4 +126,4 @@ Se han corregido los mapeos de variables de entorno para asegurar la compatibili
 # 👨‍💻 Autor
 
 **Pepe — 2026**
-````
+
