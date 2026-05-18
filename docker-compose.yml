@@ -1,23 +1,24 @@
 services:
-
   db:
     image: mysql:8.0
     container_name: romanico-db
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: romanico
-      MYSQL_USER: romanico
-      MYSQL_PASSWORD: romanico123
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - romanico-net
+      - red-backyard  # El búnker: solo accesible por el backend
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: romanico-backend
+    restart: unless-stopped
     depends_on:
       - db
     volumes:
@@ -25,25 +26,38 @@ services:
     environment:
       - CODESPACE_NAME=${CODESPACE_NAME:-}
       - GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN=${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}
+      # Pasamos las variables también al backend para que sepa conectarse
+      - DB_HOST=romanico-db
+      - DB_NAME=${DB_DATABASE}
+      - DB_USER=${DB_USERNAME}
+      - DB_PASS=${DB_PASSWORD}
     networks:
-      - romanico-net
+      - red-backyard  # Para hablar con la DB
+      - red-frontal   # Para hablar con Nginx local
 
   backend-nginx:
     image: nginx:alpine
     container_name: romanico-backend-nginx
+    restart: unless-stopped
     depends_on:
       - backend
-    ports:
-      - "8083:80"
+    # PUERTOS ELIMINADOS: Zero Trust local aplicado. El puerto 8083 muere.
     volumes:
-      - ./backend:/var/www/html
-      - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./backend:/var/www/html:ro  # Solo lectura para seguridad
+      - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - romanico-net
+      - red-frontal   # Para hablar con el backend
+      - proxy-public  # Red externa para que NPM lo vea
 
 volumes:
   db_data:
 
 networks:
-  romanico-net:
-    driver: bridge
+  # Red aislada para DB y Backend (sin acceso a internet si quieres ser radical)
+  red-backyard:
+    internal: true 
+  # Red intermedia para Backend y Nginx local
+  red-frontal:
+  # Red que creamos en Portainer para el Proxy
+  proxy-public:
+    external: true

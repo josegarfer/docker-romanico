@@ -1,118 +1,183 @@
 # Práctica 3 – Docker Multicontenedor: Aplicación Web Románico + Laravel
 
-Este proyecto implementa una aplicación web basada en **Laravel**, con autenticación y contenido multimedia del **Románico Palentino**, desplegada mediante **Docker Compose** en un entorno multicontenedor.
-
-## 🖼️ Capturas de la aplicación
-
-<p align="center">
-  <img src="images/captura_home.png" alt="Inicio" width="70%" />
-</p>
-<p align="center"><em>Página de inicio</em></p>
+Este proyecto implementa una aplicación web basada en **Laravel** sobre el **Románico Palentino**, desplegada mediante una arquitectura multicontenedor con **Docker Compose**. La solución aplica principios de aislamiento de servicios, segmentación de red y buenas prácticas de seguridad para facilitar el despliegue y mantenimiento.
 
 ---
 
+# 🖼️ Capturas de la aplicación
+
 <p align="center">
-  <img src="images/captura_registro.png" alt="Registro de usuario" width="70%" />
+  <img src="images/captura_home.png" alt="Página de inicio" width="70%" />
 </p>
-<p align="center"><em>Formulario de registro</em></p>
+
+<p align="center">
+  <em>Página principal de la aplicación</em>
+</p>
 
 ---
 
 <p align="center">
-  <img src="images/captura_login_correcto.png" alt="Login correcto" width="70%" />
+  <img src="images/captura_registro.png" alt="Formulario de registro" width="70%" />
 </p>
-<p align="center"><em>Pantalla de la web con la sesión iniciada</em></p>
+
+<p align="center">
+  <em>Registro de usuarios</em>
+</p>
 
 ---
 
-## 🧱 Contenedores incluidos
+<p align="center">
+  <img src="images/captura_login_correcto.png" alt="Sesión iniciada" width="70%" />
+</p>
 
-El archivo `docker-compose.yml` define tres contenedores:
-
-- **romanico-db** → Servidor MySQL 8.0
-- **romanico-backend** → PHP-FPM ejecutando Laravel
-- **romanico-backend-nginx** → Servidor Nginx que sirve Laravel
-
----
-
-## 🚀 Opción 1 — Despliegue en GitHub Codespaces (recomendado, sin instalar nada)
-
-> ☝️ Solo necesitas un navegador y una cuenta de GitHub.
-
-1. Haz clic en el botón verde **`<> Code`** de este repositorio
-2. Pestaña **Codespaces** → **"Create codespace on main"**
-3. Espera a que termine el build (puede tardar 2-5 minutos)
-4. Ve a la pestaña **Puertos**, localiza el puerto **8083** y haz clic en el icono 🌐 para abrirlo en el navegador.
-
-Todo lo demás (dependencias, migraciones, permisos) se configura solo.
+<p align="center">
+  <em>Aplicación con sesión autenticada</em>
+</p>
 
 ---
 
-## 🖥️ Opción 2 — Despliegue en local (Linux/Debian)
+# 🧱 Arquitectura de Contenedores
 
-> Requisitos: tener instalados `git` y `docker`.
+El despliegue está compuesto por tres servicios principales:
 
-### 1. Clonar el repositorio
+| Servicio | Tecnología | Función |
+|---|---|---|
+| `romanico-db` | MySQL 8.0 | Base de datos de la aplicación |
+| `romanico-backend` | PHP 8.2-FPM | Backend Laravel |
+| `romanico-backend-nginx` | Nginx | Servidor web y proxy interno |
 
-```bash
-git clone https://github.com/josegarfer/docker-romanico.git
-cd docker-romanico
+---
+
+# 🛡️ Seguridad y Segmentación de Red
+
+La infraestructura sigue un enfoque de **microsegmentación** inspirado en principios de **Zero Trust**.
+
+## 1. Redes aisladas
+
+Se utilizan tres redes diferenciadas:
+
+| Red | Función |
+|---|---|
+| `red-backyard` | Comunicación privada entre Laravel y MySQL |
+| `red-frontal` | Comunicación entre Nginx y PHP-FPM |
+| `proxy-public` | Integración externa con Nginx Proxy Manager |
+
+### Características de seguridad
+
+- La base de datos no expone puertos al exterior.
+- MySQL únicamente es accesible desde la red interna.
+- El contenedor Nginx monta el código en modo lectura (`:ro`).
+- Separación entre servicios frontend y backend.
+
+---
+
+## 2. Gestión de secretos
+
+Las credenciales sensibles se almacenan en un archivo `.env`, evitando exponer contraseñas en el repositorio.
+
+Ejemplo:
+
+```env
+DB_ROOT_PASSWORD=tu_clave_maestra
+DB_DATABASE=romanico
+DB_USERNAME=romanico
+DB_PASSWORD=tu_clave_usuario
 ```
 
-### 2. Levantar los contenedores
+---
+
+## 3. Inmutabilidad del servidor web
+
+El contenedor Nginx accede al código fuente en modo **solo lectura**, reduciendo el riesgo de modificaciones no autorizadas desde el servidor web.
+
+---
+
+# 🚀 Despliegue
+
+## 1. Preparación del entorno
+
+Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
+```env
+DB_ROOT_PASSWORD=tu_clave_maestra
+DB_DATABASE=romanico
+DB_USERNAME=romanico
+DB_PASSWORD=tu_clave_usuario
+```
+
+---
+
+## 2. Levantar los contenedores
+
+Desde la raíz del proyecto ejecutar:
 
 ```bash
 docker compose up -d --build
 ```
 
-### 3. Abrir la aplicación
+---
 
-```
-http://localhost:8083
+## 3. Acceso a la aplicación
+
+### Acceso directo
+
+Si existen puertos publicados en `docker-compose.yml`:
+
+```text
+http://IP-DEL-SERVIDOR:8083
 ```
 
-> El primer arranque puede tardar un par de minutos mientras se instalan las dependencias y se migra la base de datos automáticamente.
+### Acceso mediante Nginx Proxy Manager (Recomendado)
+
+Configurar un proxy host apuntando a:
+
+| Parámetro | Valor |
+|---|---|
+| Hostname | `romanico-backend-nginx` |
+| Puerto | `80` |
 
 ---
 
-## 📁 Estructura del proyecto
+# 📁 Estructura del Proyecto
 
+```text
+.
+├── .env                       # Variables sensibles (ignorado por Git)
+├── .gitignore                 # Exclusión de archivos sensibles
+├── backend/                   # Proyecto Laravel
+├── backend/nginx.conf         # Configuración personalizada de Nginx
+└── docker-compose.yml         # Orquestación de contenedores
 ```
-.devcontainer/              → Configuración de GitHub Codespaces
-backend/                    → Proyecto Laravel
-backend/entrypoint.sh       → Script de arranque automático
-backend/public/romanico/    → Imágenes, audios y subpáginas del Románico
-backend/resources/views/    → Vistas Blade
-docker-compose.yml          → Orquestación de contenedores
+
+---
+
+# 🗄️ Configuración de la Base de Datos
+
+| Parámetro | Configuración |
+|---|---|
+| Motor | MySQL 8.0 |
+| Host interno | `romanico-db` |
+| Red | `red-backyard` |
+| Acceso externo | No permitido |
+| Credenciales | Variables `.env` |
+
+---
+
+# ✔️ Estado Final
+
+- ✅ Base de datos aislada sin exposición pública.
+- ✅ Redes internas segmentadas.
+- ✅ Nginx ejecutándose con acceso de solo lectura.
+- ✅ Variables sensibles externalizadas mediante `.env`.
+- ✅ Despliegue reproducible mediante Docker Compose.
+- ✅ Laravel inicializado automáticamente mediante `entrypoint.sh`.
+
+---
+
+# 🏁 Release
+
+La versión estable del proyecto se encuentra publicada en el repositorio bajo el tag:
+
+```text
+v1.2.0
 ```
-
----
-
-## 🗄️ Base de datos MySQL
-
-| Parámetro     | Valor        |
-|---------------|--------------|
-| Host interno  | db           |
-| Usuario       | romanico     |
-| Contraseña    | romanico123  |
-| Base de datos | romanico     |
-
----
-
-## ✔️ Estado final
-
-La aplicación queda totalmente funcional con:
-
-- ✅ Despliegue automático en Codespaces con un solo clic
-- ✅ Despliegue local con un solo comando
-- ✅ Frontend compilado (Vite + Tailwind)
-- ✅ Entorno Laravel configurado
-- ✅ Base de datos migrada
-- ✅ Permisos corregidos
-- ✅ Cachés limpiadas
-
----
-
-## 🏁 Release
-
-La versión final corregida está publicada en Releases bajo el tag `v1.2.0`.
