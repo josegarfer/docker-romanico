@@ -11,7 +11,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - red-backyard  # El búnker: solo accesible por el backend
+      - red-backyard
 
   backend:
     build:
@@ -26,14 +26,15 @@ services:
     environment:
       - CODESPACE_NAME=${CODESPACE_NAME:-}
       - GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN=${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}
-      # Pasamos las variables también al backend para que sepa conectarse
+      - DB_CONNECTION=mysql
       - DB_HOST=romanico-db
-      - DB_NAME=${DB_DATABASE}
-      - DB_USER=${DB_USERNAME}
-      - DB_PASS=${DB_PASSWORD}
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     networks:
-      - red-backyard  # Para hablar con la DB
-      - red-frontal   # Para hablar con Nginx local
+      - red-backyard
+      - red-frontal
 
   backend-nginx:
     image: nginx:alpine
@@ -41,23 +42,23 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    # PUERTOS ELIMINADOS: Zero Trust local aplicado. El puerto 8083 muere.
+    # PUERTO MAPEADO: Para que funcione en Codespaces y local sin configurar nada.
+    # NOTA SEGURIDAD: En producción real (Zero Trust), comentar la línea de ports y usar Nginx Proxy Manager.
+    ports:
+      - "8083:80"
     volumes:
-      - ./backend:/var/www/html:ro  # Solo lectura para seguridad
+      - ./backend:/var/www/html:ro
       - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - red-frontal   # Para hablar con el backend
-      - proxy-public  # Red externa para que NPM lo vea
+      - red-frontal
+      - proxy-public
 
 volumes:
   db_data:
 
 networks:
-  # Red aislada para DB y Backend (sin acceso a internet si quieres ser radical)
   red-backyard:
-    internal: true 
-  # Red intermedia para Backend y Nginx local
+    internal: true
   red-frontal:
-  # Red que creamos en Portainer para el Proxy
   proxy-public:
     external: true
