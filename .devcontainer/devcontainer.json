@@ -4,7 +4,9 @@
     "service": "backend",
     "workspaceFolder": "/var/www/html",
     "forwardPorts": [8083],
-    "postCreateCommand": "php artisan key:generate --no-interaction; php artisan migrate --force --no-interaction; php artisan optimize:clear; chown -R www-data:www-data storage bootstrap/cache",
+    // COMENTARIO: Se han añadido los comandos 'cp' al principio para crear los .env antes de que Laravel intente ejecutarse.
+    // Se usa '&&' para asegurar que si falla la copia, no intente migrar la base de datos.
+    "postCreateCommand": "cp ../.env.example ../.env && cp .env.example .env && php artisan key:generate --no-interaction && php artisan migrate --force --no-interaction && php artisan optimize:clear && chown -R www-data:www-data storage bootstrap/cache",
     "portsAttributes": {
         "8083": {
             "label": "Laravel App",

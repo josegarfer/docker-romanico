@@ -1,12 +1,15 @@
+version: '3.8'
+
 services:
   db:
     image: mysql:8.0
     container_name: romanico-db
     restart: unless-stopped
     environment:
+      # Usamos :- para dar valores por defecto y que no falle en Codespaces si el .env no existe
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_DATABASE: ${DB_DATABASE:-romanico}
+      MYSQL_USER: ${DB_USERNAME:-romanico}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
@@ -29,8 +32,8 @@ services:
       - DB_CONNECTION=mysql
       - DB_HOST=romanico-db
       - DB_PORT=3306
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USERNAME=${DB_USERNAME}
+      - DB_DATABASE=${DB_DATABASE:-romanico}
+      - DB_USERNAME=${DB_USERNAME:-romanico}
       - DB_PASSWORD=${DB_PASSWORD}
     networks:
       - red-backyard
@@ -42,12 +45,11 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    # PUERTO MAPEADO: Para que funcione en Codespaces y local sin configurar nada.
-    # NOTA SEGURIDAD: En producción real (Zero Trust), comentar la línea de ports y usar Nginx Proxy Manager.
     ports:
       - "8083:80"
     volumes:
-      - ./backend:/var/www/html:ro
+      # REFORZADO: Nginx solo necesita entrar en la carpeta public de Laravel
+      - ./backend/public:/var/www/html/public:ro
       - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - red-frontal
@@ -58,7 +60,10 @@ volumes:
 
 networks:
   red-backyard:
-    internal: true
+    internal: true # Aislamiento total: la DB no tiene salida a internet
   red-frontal:
   proxy-public:
-    external: true
+    # PARA CODESPACES Y DEBIAN:
+    # Si la red existe (Debian), se une. Si no existe (Codespaces), la crea.
+    name: proxy-public
+    external: false

@@ -3,6 +3,8 @@ set -e
 
 cd /var/www/html
 
+# CAMBIO: El 'cp' ya no es crítico aquí porque lo hace el devcontainer, 
+# pero lo dejamos por si lanzas el contenedor a mano en local.
 if [ ! -f .env ]; then
     cp .env.example .env
 fi
@@ -24,6 +26,9 @@ fi
 php artisan key:generate --no-interaction 2>/dev/null || true
 php artisan migrate --force --no-interaction 2>/dev/null || true
 php artisan optimize:clear
-chown -R www-data:www-data storage bootstrap/cache
+
+# CAMBIO: Eliminamos el 'chown'. 
+# Ya lo hicimos en el Dockerfile como root antes de cambiar al usuario www-data.
+# Un usuario sin privilegios no puede ejecutar chown.
 
 exec php-fpm

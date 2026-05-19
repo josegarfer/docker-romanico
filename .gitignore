@@ -1,1 +1,6 @@
 .env
+**/.env
+storage/*.key
+db_data/
+# Resultados de KICS
+kics-results/
